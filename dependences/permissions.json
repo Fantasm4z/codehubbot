@@ -6,29 +6,6 @@
       "setUsername": false
     },
     "users": {
-      "545369911162175503":{
-          "criador": true,
-          "eval": true,
-          "pullanddeploy": true,
-          "setUsername": true
-      },
-      "509574372047060992":{
-        "criador": true,
-        "eval": false,
-        "pullanddeploy": true,
-        "setUsername": true
-      },
-      "469245017530302494": {
-        "criador": true,
-        "eval": true,
-        "pullanddeploy": true,
-        "setUsername": true
-      },
-      "360509357902921729":{
-        "criador": true,
-        "eval": false,
-        "pullanddeploy": true,
-        "setUsername": true
-      }
+      
     }
   }

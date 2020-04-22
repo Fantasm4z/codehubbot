@@ -1,0 +1,12 @@
+{
+    "botName": "bot name",
+    "botAvatar": "avatar link",
+    "TOKEN": "Your bot token here",
+    "prefix": "prefix 1",
+    "prefix2": "prefix 2",
+    "allowDMMessage": false,
+    "allowCmdInAllChannel": false,
+    "adminID": "admin id",
+    "commandID": "receive chat command id",
+    "ratelimit": false
+}

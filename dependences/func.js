@@ -60,6 +60,7 @@ export default class Functions {
                 this.setLog( 'Failed to get BOT cfg.. please edit config.json and try later.','error' );
                 process.exit( );
             }
+            return true;
         }catch( e ){
             this.setLog( 'config.json not found.','error' );
             process.exit( );
@@ -88,6 +89,12 @@ export default class Functions {
         }catch( e ){
             this.setLog( 'permissions.json not found.','error' );
             process.exit( );
+        }
+    }
+
+    getConfig() {
+        if ( this.checkConfiguration() ){
+            return this.loadJSON( path.resolve( path.resolve( ) + '/dependences/config.json' ) );
         }
     }
 }

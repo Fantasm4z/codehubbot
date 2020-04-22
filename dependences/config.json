@@ -1,5 +1,12 @@
 {
+    "botName": "CodeHub!",
+    "botAvatar": "",
+    "TOKEN": "NzAyNjI1MTQ0NzgyNDU0ODc0.XqCxLQ.czvE0vraQLkPJqHfUTgJgKOIbko",
+    "prefix": "!",
+    "prefix2": ".",
+    "allowDMMessage": false,
+    "allowCmdInAllChannel": false,
     "adminID": "469245017530302494",
-    "commandID": "701593078850650176",
+    "commandID": "698044980832370692",
     "ratelimit": false
 }
