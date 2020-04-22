@@ -1,0 +1,6 @@
+1 - Startar o repositório no GitHub!
+2 - Criar o meio de autenticação entre o servidor e o discord utilizando discord.js.
+3 - Criar proteções simples, caso alguém tente executar um comando e marcando o bot por exemplo.
+4 - Criar funções simples, como kick, banimento, silenciar, setar cargo...
+5 - Criar funções mais complexas, como voteban, votekick, voteenabler (admin/mod habilita e desabilita o voteban/kick)
+6 - Criar como um Rate Limit... (Anti flood de mensagem. Pode conter falhas!)
