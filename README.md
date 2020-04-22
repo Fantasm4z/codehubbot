@@ -14,9 +14,9 @@
   </a>
 </p>
 
-> CLI that generates beautiful README.md files.
+> This DiscordBOT was Created by Fantasm4
 
-### 🏠 [Homepage](https://github.com/kefranabg/readme-md-generator#readme)
+### 🏠 [Homepage](https://github.com/Fantasm4z/codehubbot#readme)
 
 ## Prerequisites
 
