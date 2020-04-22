@@ -15,5 +15,12 @@
   "bugs": {
     "url": "https://github.com/Fantasm4z/codehubbot/issues"
   },
-  "homepage": "https://github.com/Fantasm4z/codehubbot#readme"
+  "type": "module",
+  "homepage": "https://github.com/Fantasm4z/codehubbot#readme",
+  "dependencies": {
+    "colors": "^1.4.0",
+    "discord.js": "^12.2.0",
+    "fs": "0.0.1-security",
+    "path": "^0.12.7"
+  }
 }
