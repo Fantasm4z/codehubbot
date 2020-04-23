@@ -43,7 +43,7 @@ function checkIfMessageHasCommand(msg, isEdit) {
                             .setAuthor(msg.author.username, msg.author.avatarURL)
                             .setTitle('Syntaxe Incorreta!')
                             .addField("Modo de Uso", cmd.usage)
-                            //.addField("Nivel de Permissão", convert_p(cmd.modo), true)
+                            .addField("Nivel de Permissão", Func.convPermissions( cmd.mode ), true)
                             .addField("Descrição", cmd.description, true)
                             .setColor(`#ffff00`)
                             .setTimestamp(new Date())

@@ -9,5 +9,6 @@
     "adminID": "admin id",
     "commandID": "receive chat command id",
     "ratelimit": false,
-    "xpEvent": true
+    "xpEvent": true,
+    "debug": true
 }

@@ -1,5 +1,6 @@
 import Functions from './func.js';
 import DiscordAPI from 'discord.js';
+import * as fs from 'fs';
 
 var commands = { };
 var votacao = false;
@@ -13,7 +14,57 @@ export default commands = {
                 oldMsg.edit( `Pong! **${oldMsg.createdAt - msg.createdAt}ms**` );
             })
         }
-    },
+	},
+	
+	"perm": {
+		mode: 3,
+		command: "perm",
+		usage: "!perm <@user> <criador,eval>",
+		uso: "**Modo de uso:**\n!perm <@user> <criador,eval>\n\n**Boa Sorte!**",
+		description: 'Setar permissões de criador,eval para algum usuário',
+		process: function(bot,msg,suffix) {
+
+			var motivo = suffix;
+			motivo = suffix.split(' ')[1].toString( ).trim( );
+			var usuario = msg.guild.member( msg.mentions.users.first( ) );
+
+			if ( !new Functions( ).checkPermissions( msg.author, 'criador' ) ) {
+				msg.reply( 'Você não tem permissões para executar este comando.' );
+				return;
+			}
+
+			if( motivo === 'criador' || motivo === 'eval') {
+
+				let permFile = new Functions( ).loadJSON( new Functions( ).resolvePath( '/dependences/permissions.json' ) );
+				
+				if( !permFile.users[usuario.user.id] ){
+					const permExists = {
+						"criador": false,
+						"eval": false
+					};
+					permExists[motivo] = true;
+					permFile.users[usuario.user.id] = permExists;
+				} else {
+					const permExists = {
+						"criador": permFile.users[usuario.user.id].criador,
+						"eval": permFile.users[usuario.user.id].eval
+					};
+					permExists[motivo] = true;
+					permFile.users[usuario.user.id] = permExists;
+				}
+
+				fs.writeFile( new Functions( ).resolvePath( '/dependences/permissions.json' ), JSON.stringify(permFile), (err) => {
+					if(err) console.log(err)
+				});
+
+				msg.reply('Permissão setada!');
+				
+			}else {
+				msg.reply( 'Desconheço essa permissão.' );
+				return;
+			}
+		}
+	},
 
     "eval": {
 		modo: 3,

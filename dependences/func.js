@@ -53,6 +53,10 @@ export default class Functions {
         return JSON.parse(fs.readFileSync(dir, 'utf8'));
     }
 
+    resolvePath( arg ) {
+        return path.resolve( path.resolve( ) + arg );
+    }
+
     checkExp( ) {
         try{
             let XP = this.loadJSON( path.resolve( path.resolve( ) + '/dependences/experience.json' ) );
@@ -102,6 +106,12 @@ export default class Functions {
             this.setLog( 'config.json not found.','error' );
             process.exit( );
         }
+    }
+
+    convPermissions( modo ){
+        if(modo == 1){return 'User Mode';}
+        if(modo == 2){return 'Admin Mode';}
+        if(modo == 3){return 'Creator Mode';}
     }
 
     checkPermissions( user, permission ) {
