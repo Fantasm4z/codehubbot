@@ -32,7 +32,58 @@ export default commands = {
 				msg.reply("Você não tem permissão para usar o eval.");
 			}
 		}
-    },
+	},
+	
+	"xp": {
+		modo: 1,
+		command: "xp",
+		description: "Consultar experiência no servidor",
+		process: function(bot,msg,suffix) {
+			let XP = new Functions( ).checkExp( );
+			let curxp = XP[msg.author.id].xp;
+			let curlvl = XP[msg.author.id].level;
+			let nxtLvlXp = curlvl * 300;
+			let difference = nxtLvlXp - curxp;
+		
+			var embed = new DiscordAPI.MessageEmbed()
+			.setAuthor(msg.author.username, msg.author.avatarURL)
+			.setColor(`#9400D3`)
+			.addField("Level",curlvl,true)
+			.addField("XP",curxp,true)
+			.setThumbnail(msg.author.avatarURL)
+			.setTimestamp(new Date())
+			.setFooter(`CodeHub! © 2020`, new Functions( ).getConfig( ).botAvatar)
+			msg.channel.send({embed});
+		}
+	},
+
+	"limpar": {
+		modo: 2,
+		command: "limpar",
+		description: 'Limpar o chat do canal',
+		process: function(bot,msg,suffix) {
+			if( new Functions( ).checkPermissions( msg.author,"criador" ) ){
+
+				if ( msg.member.hasPermission( "ADMINISTRATOR" ) ) {
+					msg.channel.messages.fetch( ).then(function( list ){
+						msg.channel.bulkDelete( list );
+						var embed = new DiscordAPI.MessageEmbed( );
+						embed.setColor(0x00ff70);
+						embed.setTitle('Limpeza solicitada');
+						embed.setAuthor(msg.author.username, msg.author.avatarURL);
+						embed.setTimestamp();
+						embed.setDescription(`Limpeza realizada com êxito!`);
+						embed.setFooter(`CodeHub! © 2020`, new Functions( ).getConfig( ).botAvatar);
+						msg.channel.send({embed})
+					}, function( err ){msg.reply("Falha ao limpar o chat.")}) 
+				}
+			} else {
+				msg.reply( 'Você não tem permissão para usar o limpar.' );
+				new Functions( ).setLog( `O Usuário ${msg.author.username} tentou executar o comando limpar porém não tem permissão.`, '');
+				return;
+			}
+		}
+	},
     
     "voteban": {
 		modo: 1,

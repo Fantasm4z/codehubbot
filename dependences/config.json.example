@@ -8,5 +8,6 @@
     "allowCmdInAllChannel": false,
     "adminID": "admin id",
     "commandID": "receive chat command id",
-    "ratelimit": false
+    "ratelimit": false,
+    "xpEvent": true
 }

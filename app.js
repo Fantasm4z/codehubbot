@@ -7,6 +7,7 @@ const Func = new Functions( );
 Func.checkDependencies( );
 Func.setLog( 'Starting funcs...', 'purple' );
 Func.checkConfiguration( );
+Func.checkExp( );
 
 function checkIfMessageHasCommand(msg, isEdit) {
     if( msg.author.id != bot.user.id && ( msg.content.startsWith( Func.getConfig( ).prefix ) || msg.content.startsWith( Func.getConfig( ).prefix2 ) ) ) {
@@ -54,13 +55,19 @@ function checkIfMessageHasCommand(msg, isEdit) {
 					cmd.process(bot,msg,suffix,isEdit);
 				} catch(e){
 					// Log if has a debug mode.
+					console.log( e );
 				}
 			} else {
 				msg.channel.send("Você não tem permissão para usar " + cmdTxt + "!");
 			}
         }
 
-    }
+    } else if( msg.author.id != bot.user.id ){
+
+		if ( Func.getConfig( ).xpEvent ) {
+			Func.expFunction( msg );
+		}
+	}
 }
 
 var bot = new DiscordAPI.Client( );
@@ -98,6 +105,6 @@ if( Func.getConfig( ).TOKEN ){
 }
 
 process.on('unhandledRejection', (reason) => {
-	console.error(reason);
+	
 	process.exit(1);
 });

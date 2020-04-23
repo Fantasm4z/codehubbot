@@ -53,6 +53,43 @@ export default class Functions {
         return JSON.parse(fs.readFileSync(dir, 'utf8'));
     }
 
+    checkExp( ) {
+        try{
+            let XP = this.loadJSON( path.resolve( path.resolve( ) + '/dependences/experience.json' ) );
+            return XP;
+        }catch( e ){
+            this.setLog( 'experience.json not found.','error' );
+            process.exit( );
+        }
+    }
+
+    expFunction( msg ) {
+        let XP = this.checkExp( );
+
+		if( !XP[msg.author.id] ){
+			XP[msg.author.id] = {
+				xp: 0,
+				level: 1
+			};
+		}
+
+		let xpAdd = Math.floor(Math.random() * 7) + 8;
+		
+		let curxp = XP[msg.author.id].xp;
+		let curlvl = XP[msg.author.id].level;
+		let nxtLvl = XP[msg.author.id].level * 300;
+		XP[msg.author.id].xp = curxp + xpAdd;
+			
+		if(nxtLvl <= XP[msg.author.id].xp){
+			XP[msg.author.id].level = curlvl + 1;
+			msg.reply(`Opa meu consa, você upou seu level para ${XP[msg.author.id].level}!`);
+		}
+			
+		fs.writeFile( path.resolve( path.resolve( ) + '/dependences/experience.json' ), JSON.stringify(XP), (err) => {
+			if(err) console.log(err)
+		});
+    }
+
     checkConfiguration( ) {
         try{
             let cfg = this.loadJSON( path.resolve( path.resolve( ) + '/dependences/config.json' ) );
