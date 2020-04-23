@@ -24,13 +24,18 @@ function checkIfMessageHasCommand(msg, isEdit) {
 			msg.channel.send( 'Modo DM Desabilitado!' )
 			Func.setLog( `O Usuário ${msg.author.username} tentou enviar o comando ${cmdTxt} no DM.`, 'warning' );
 			return;
+		}
+		
+		if( msg.mentions.has( bot.user.id ) ) {
+			msg.reply( "Q se ta me marcano ae mermão?" );
+			return;
         }
         
         if( msg.channel.id != Func.getConfig( ).commandID && msg.author.username !== bot.user.username ){
 			msg.delete();
 			Func.setLog( `O Usuário ${msg.author.username} tentou enviar o comando ${cmdTxt} no canal de logs.`, 'warning' );
 			return;
-        }
+		}
         
         var cmd = Commands[cmdTxt];
 

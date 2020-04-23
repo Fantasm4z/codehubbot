@@ -135,6 +135,56 @@ export default commands = {
 			}
 		}
 	},
+
+	"banir": {
+		modo: 2,
+		usage: "!banir <@USER_ID>",
+		uso: "**Modo de uso:**\n!banir <@USER_ID> <Motivo>\n\n**Azar de quem receber este comando hihi**",
+		description: "BANIR USUÁRIOS [ADMINISTRADOR].",
+		process: function( bot, msg, suffix ) {
+
+			var motivo = suffix;
+            motivo = suffix.substring(23);
+			
+			if ( msg.member.hasPermission( "ADMINISTRATOR" ) ) {
+				let banMember = msg.guild.member(msg.mentions.users.first());
+				if( !banMember ){
+					msg.reply('Usuário à ser banido não mencionado.');
+					return;
+				}
+				
+				if( motivo.length < 5 ){
+					msg.reply('Insira o motivo do banimento.');
+					return;
+				}
+				
+				if( new Functions( ).checkPermissions( banMember,"criador" ) ){
+					msg.reply( 'Este usuário não pode ser banido.' );
+					return;
+				}
+				
+				bot.users.fetch( banMember.id ).then( myUser => {
+
+					var embed = new DiscordAPI.MessageEmbed()
+					.setAuthor(myUser.username, myUser.avatarURL)
+					.setTitle('Você foi banido do Servidor')
+					.setDescription("Detectamos uma atividade incomum em nosso servidor..")
+					.addField("Motivo:", motivo)
+					.addField("Autor do banimento: ", msg.author.username)
+					.setColor(`#ff0000`)
+					.setTimestamp(new Date())
+					.setFooter(`CodeHub! © 2020`, new Functions( ).getConfig( ).botAvatar);
+					banMember.send({embed}).then( function( ) {
+						msg.guild.member( banMember ).ban();
+						msg.channel.send( "O Usuário foi banido. 🙅" );
+					});
+				});
+
+			} else {
+			  	msg.reply( "Você não tem permissão para utilizar este comando." );
+			}
+        }
+	},
     
     "voteban": {
 		modo: 1,
