@@ -54,8 +54,7 @@ function checkIfMessageHasCommand(msg, isEdit) {
 				    }
 					cmd.process(bot,msg,suffix,isEdit);
 				} catch(e){
-					// Log if has a debug mode.
-					console.log( e );
+					if( Func.getConfig( ).debug ) Func.setLog( e, 'error' );
 				}
 			} else {
 				msg.channel.send("Você não tem permissão para usar " + cmdTxt + "!");
