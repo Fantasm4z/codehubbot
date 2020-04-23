@@ -38,16 +38,16 @@ function checkIfMessageHasCommand(msg, isEdit) {
 				try{
 					if(cmd.uso){
 					    if(!suffix){
-                            var embed = new Discord.RichEmbed()
+							var embed = new DiscordAPI.MessageEmbed()
                             .setAuthor(msg.author.username, msg.author.avatarURL)
                             .setTitle('Syntaxe Incorreta!')
                             .addField("Modo de Uso", cmd.usage)
-                            .addField("Nivel de Permissão", convert_p(cmd.modo), true)
+                            //.addField("Nivel de Permissão", convert_p(cmd.modo), true)
                             .addField("Descrição", cmd.description, true)
                             .setColor(`#ffff00`)
                             .setTimestamp(new Date())
                             .setFooter(`${Func.getConfig( ).botName} © 2020`, Func.getConfig( ).botAvatar)
-                            msg.channel.send({embed})
+							msg.channel.send({embed})
                             return;
 					    }
 				    }
@@ -96,3 +96,8 @@ if( Func.getConfig( ).TOKEN ){
 	Func.setLog( "\nLogging in with user credentials is no longer supported!\nYou can use token based log in with a user account, see\nhttps://discord.js.org/#/docs/main/master/general/updating", 'error');
     process.exit( );
 }
+
+process.on('unhandledRejection', (reason) => {
+	console.error(reason);
+	process.exit(1);
+});
