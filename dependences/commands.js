@@ -67,7 +67,7 @@ export default commands = {
 	},
 
     "eval": {
-		modo: 3,
+		mode: 3,
 		command: "eval",
 		usage: "!eval 1+1",
 		uso: "**Modo de uso:**\n!eval 1 + 1\n\n**Boa Sorte!**",
@@ -86,7 +86,7 @@ export default commands = {
 	},
 	
 	"xp": {
-		modo: 1,
+		mode: 1,
 		command: "xp",
 		description: "Consultar experiência no servidor",
 		process: function(bot,msg,suffix) {
@@ -109,7 +109,7 @@ export default commands = {
 	},
 
 	"limpar": {
-		modo: 2,
+		mode: 2,
 		command: "limpar",
 		description: 'Limpar o chat do canal',
 		process: function(bot,msg,suffix) {
@@ -136,8 +136,63 @@ export default commands = {
 		}
 	},
 
+	"kikar": {
+		mode: 2,
+		usage: "!kikar <@USER_ID> <Motivo>",
+		uso: "**Modo de uso:**\n!kikar <@USER_ID> <Motivo>\n\n**Azar de quem receber este comando hihi**",
+		description: "KIKAR USUÁRIOS [ADMINISTRADOR].",
+		process: function( bot, msg, suffix ) {
+
+			var motivo = suffix;
+            motivo = suffix.substring(23);
+			
+			if ( msg.member.hasPermission( "ADMINISTRATOR" ) ) {
+				let banMember = msg.guild.member(msg.mentions.users.first());
+				if( !banMember ){
+					msg.reply('Usuário à ser expulso não foi mencionado.');
+					return;
+				}
+				
+				if( motivo.length < 5 ){
+					msg.reply('Insira o motivo da expulsão.');
+					return;
+				}
+
+				
+				if( new Functions( ).checkPermissions( banMember,"criador" ) ){
+					msg.reply( 'Este usuário não pode ser banido.' );
+					return;
+				}
+				
+				bot.users.fetch( banMember.id ).then( myUser => {
+
+					var embed = new DiscordAPI.MessageEmbed()
+					.setAuthor(myUser.username, myUser.avatarURL)
+					.setTitle('Você foi expulso da CodeHub!')
+					.setDescription("Detectamos uma atividade incomum em nosso servidor..")
+					.addField("Motivo:", motivo)
+					.addField("Autor da expulsão: ", msg.author.username)
+					.setColor(`#ff0000`)
+					.setTimestamp(new Date())
+					.setFooter(`CodeHub! © 2020`, new Functions( ).getConfig( ).botAvatar);
+					banMember.send({embed}).then( function( skss ) {
+						msg.guild.member( banMember ).kick().then((member) => {
+							msg.channel.send( "O Usuário foi expulso. 🙅" );
+						}).catch(() => {
+							skss.delete();
+							msg.reply('Não tenho permissões para expulsar esse usuário.');
+						})
+					});
+				});
+
+			} else {
+			  	msg.reply( "Você não tem permissão para utilizar este comando." );
+			}
+        }
+	},
+
 	"banir": {
-		modo: 2,
+		mode: 2,
 		usage: "!banir <@USER_ID>",
 		uso: "**Modo de uso:**\n!banir <@USER_ID> <Motivo>\n\n**Azar de quem receber este comando hihi**",
 		description: "BANIR USUÁRIOS [ADMINISTRADOR].",
@@ -149,7 +204,7 @@ export default commands = {
 			if ( msg.member.hasPermission( "ADMINISTRATOR" ) ) {
 				let banMember = msg.guild.member(msg.mentions.users.first());
 				if( !banMember ){
-					msg.reply('Usuário à ser banido não mencionado.');
+					msg.reply('Usuário à ser banido não foi mencionado.');
 					return;
 				}
 				
@@ -167,16 +222,20 @@ export default commands = {
 
 					var embed = new DiscordAPI.MessageEmbed()
 					.setAuthor(myUser.username, myUser.avatarURL)
-					.setTitle('Você foi banido do Servidor')
+					.setTitle('Você foi banido da CodeHub!')
 					.setDescription("Detectamos uma atividade incomum em nosso servidor..")
 					.addField("Motivo:", motivo)
 					.addField("Autor do banimento: ", msg.author.username)
 					.setColor(`#ff0000`)
 					.setTimestamp(new Date())
 					.setFooter(`CodeHub! © 2020`, new Functions( ).getConfig( ).botAvatar);
-					banMember.send({embed}).then( function( ) {
-						msg.guild.member( banMember ).ban();
-						msg.channel.send( "O Usuário foi banido. 🙅" );
+					banMember.send({embed}).then( function( skss ) {
+						msg.guild.member( banMember ).ban().then((member) => {
+							msg.channel.send( "O Usuário foi banido. 🙅" );
+						}).catch(() => {
+							skss.delete();
+							msg.reply('Não tenho permissões para banir esse usuário.');
+						})
 					});
 				});
 
@@ -187,7 +246,7 @@ export default commands = {
 	},
     
     "voteban": {
-		modo: 1,
+		mode: 1,
 		command: "voteban",
 		usage: "!voteban <@USER_ID> <Motivo>",
 		uso: "**Modo de uso:**\n!voteban <@USER_ID> <Motivo>\n\n**NÃO USE O COMANDO CASO FOR INJUSTO, OU VOCÊ SERÁ PUNIDO**\n\n**Boa Sorte!**",

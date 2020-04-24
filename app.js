@@ -100,6 +100,22 @@ bot.on( 'messageUpdate', ( oldMessage, newMessage ) => {
 	checkIfMessageHasCommand( newMessage,true );
 } );
 
+bot.on('guildMemberAdd', member => {
+	try {
+		var embed = new DiscordAPI.MessageEmbed()
+        .setAuthor(msg.author.username, msg.author.avatarURL)
+        .setTitle('Olá! Seja Bem Vindo ao CodeHub!')
+        .setDescription('Obrigado por fazer parte da nossa comunidade! Agora basta se verificar no servidor. :)')
+        .setColor(`#ffffff`)
+        .setTimestamp(new Date())
+        .setFooter(`${Func.getConfig( ).botName} © 2020`, Func.getConfig( ).botAvatar)
+		member.send({embed});
+	} catch( e ) {
+		Func.setLog( 'Fail to send Welcome PM Message..', 'error' );
+		return;
+	}
+ });
+
 if( Func.getConfig( ).TOKEN ){
 	Func.setLog( 'Attempt to log-in bot credentials...', 'purple' );
 	bot.login( Func.getConfig( ).TOKEN );
