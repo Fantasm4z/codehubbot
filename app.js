@@ -33,7 +33,7 @@ function checkIfMessageHasCommand(msg, isEdit) {
         
         if( msg.channel.id != Func.getConfig( ).commandID && msg.author.username !== bot.user.username ){
 			msg.delete();
-			Func.setLog( `O Usuário ${msg.author.username} tentou enviar o comando ${cmdTxt} no canal de logs.`, 'warning' );
+			Func.setLog( `O Usuário ${msg.author.username} tentou enviar o comando ${cmdTxt} em canal não permitido.`, 'warning' );
 			return;
 		}
         
@@ -71,13 +71,19 @@ function checkIfMessageHasCommand(msg, isEdit) {
 		if ( Func.getConfig( ).xpEvent ) {
 			Func.expFunction( msg );
 		}
+
+		if (msg.content.includes('discord.gg/') || msg.content.includes('discordapp.com/invite/')) {
+			msg.delete();
+		}
 	}
 }
 
 var bot = new DiscordAPI.Client( );
 
 bot.on( 'ready', function ( ) {
-    Func.setLog( 'Ready!','success' );
+	Func.setLog( 'Ready!','success' );
+	bot.user.setActivity("Kernel Code", { type: "STREAMING", url: "https://www.twitch.tv/something" })
+	//bot.user.setActivity( 'NtQueryInformationThread', { type: "WATCHING"});
 } );
 
 bot.on( 'presence', function( user,status,gameId ) {
@@ -125,6 +131,6 @@ if( Func.getConfig( ).TOKEN ){
 }
 
 process.on('unhandledRejection', (reason) => {
-	
+	Func.setLog( reason, 'error' );
 	process.exit(1);
 });
