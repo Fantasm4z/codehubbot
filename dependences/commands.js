@@ -84,6 +84,34 @@ export default commands = {
 			}
 		}
 	},
+
+	"avatar": {
+		mode: 1,
+		command: "avatar",
+		usage: "!avatar <@USER_ID>",
+		uso: "**Modo de uso:**\n!avatar <@USER_ID>\n\n**Boa Sorte!**",
+		description: 'Obter foto de perfil de um determinado usuário.',
+		process: function(bot,msg,suffix) {
+
+			var usuario = msg.guild.member(msg.mentions.users.first());
+
+			bot.users.fetch( usuario.id ).then( myUser => {
+				var embed = new DiscordAPI.MessageEmbed();
+				embed.setColor(0x00ff70);
+				embed.setTitle('Imagem de perfil do usuário:');
+				embed.setImage(usuario.user.avatarURL());
+				embed.addField('Nick:', usuario.user.username);
+				embed.addField('Discriminador:', usuario.user.discriminator);
+				embed.setAuthor(msg.author.username, msg.author.avatarURL);
+				embed.setTimestamp();
+				embed.setFooter(`CodeHub! © 2020`, new Functions( ).getConfig( ).botAvatar)
+				msg.channel.send({embed})
+				new Functions( ).setLog( `O ${msg.author.username} consultou o avatar de ${usuario.user.username}`, '' );
+			}).catch((e) => {
+				console.log(e);
+			});
+		}
+	},
 	
 	"xp": {
 		mode: 1,
