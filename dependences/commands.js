@@ -85,6 +85,48 @@ export default commands = {
 		}
 	},
 
+	"silenciar": {
+		mode: 3,
+		command: "silenciar",
+		usage: "!silenciar <@USER_ID>",
+		uso: "**Modo de uso:**\n!silenciar <@USER_ID>\n\n**Boa Sorte!**",
+		description: 'Silenciar otarios que estao enchendo o saco',
+		process: function(bot,msg,suffix) {
+			if( new Functions( ).checkPermissions( msg.author,"criador" ) ){
+
+				const usuario = msg.guild.member(msg.mentions.users.first());
+
+				if( new Functions( ).checkPermissions( usuario,"criador" ) ){
+					msg.reply( 'Este usuário não pode ser silenciado.' );
+					return;
+				}
+
+				if( !usuario ) {
+					msg.reply( 'Mencione um usuário à ser silenciado.' );
+					return;
+				}
+
+				let ifHasMuted = usuario.roles.cache.get( new Functions( ).getConfig( ).mutedID );
+				let ifHasMember = usuario.roles.cache.get( new Functions( ).getConfig( ).memberID );
+				if( !ifHasMuted && ifHasMember ){
+					usuario.roles.remove( new Functions( ).getConfig( ).memberID );
+					usuario.roles.add( new Functions( ).getConfig( ).mutedID );
+					msg.reply( 'Mutado!' );
+				}else if( !ifHasMuted && !ifHasMember ){
+					usuario.roles.add( new Functions( ).getConfig( ).mutedID );
+					msg.reply( 'Mutado!' );
+				}else if( ifHasMuted ) {
+					usuario.roles.add( new Functions( ).getConfig( ).memberID );
+					usuario.roles.remove( new Functions( ).getConfig( ).mutedID );
+					msg.reply( 'Removido!' );
+				}
+
+			} else {
+				msg.reply("Você não tem permissão para usar o eval.");
+			}
+		}
+	},
+
 	"avatar": {
 		mode: 1,
 		command: "avatar",

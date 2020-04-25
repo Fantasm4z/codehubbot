@@ -31,7 +31,7 @@ function checkIfMessageHasCommand(msg, isEdit) {
 			return;
         }
         
-        if( msg.channel.id != Func.getConfig( ).commandID && msg.author.username !== bot.user.username ){
+        if( msg.channel.id != Func.getConfig( ).commandID && msg.author.username !== bot.user.username && !Func.checkPermissions(msg.author, 'criador') ){
 			msg.delete();
 			Func.setLog( `O Usuário ${msg.author.username} tentou enviar o comando ${cmdTxt} em canal não permitido.`, 'warning' );
 			return;
@@ -109,7 +109,7 @@ bot.on( 'messageUpdate', ( oldMessage, newMessage ) => {
 bot.on('guildMemberAdd', member => {
 	try {
 		var embed = new DiscordAPI.MessageEmbed()
-        .setAuthor(msg.author.username, msg.author.avatarURL)
+        .setAuthor(bot.user.username, bot.user.avatarURL())
         .setTitle('Olá! Seja Bem Vindo ao CodeHub!')
         .setDescription('Obrigado por fazer parte da nossa comunidade! Agora basta se verificar no servidor. :)')
         .setColor(`#ffffff`)
