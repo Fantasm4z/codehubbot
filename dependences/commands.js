@@ -1,18 +1,38 @@
 import Functions from './func.js';
 import DiscordAPI from 'discord.js';
 import * as fs from 'fs';
+import path from 'path';
 
 var commands = { };
 var votacao = false;
+
+async function getRandomSosiaMEME( ) {
+
+	const files = fs.readdirSync(path.resolve( path.resolve( ) + '/dependences/sosiaDB' ));
+	let chosenFile = files[Math.floor(Math.random() * files.length)];
+	return path.resolve( path.resolve( ) + '/dependences/sosiaDB/' + chosenFile );
+}
 
 export default commands = {
     "ping": {
 		mode: 1,
         description: "Check ping of BOT.",
         process: function(bot, msg, suffix) {
+			searchToreto();
             msg.channel.send( '*Ping...*' ).then( function( oldMsg ) {
                 oldMsg.edit( `Pong! **${oldMsg.createdAt - msg.createdAt}ms**` );
             })
+        }
+	},
+
+	"sosia": {
+		mode: 1,
+        description: "Get a random meme of sosia's.",
+        process: async function(bot, msg, suffix) {
+			msg.delete();
+			var link = await getRandomSosiaMEME();
+			const attachment = new DiscordAPI.MessageAttachment(link);
+			msg.channel.send(`ok`, attachment);
         }
 	},
 	
