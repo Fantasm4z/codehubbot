@@ -2,6 +2,7 @@ import Functions from './func.js';
 import DiscordAPI from 'discord.js';
 import * as fs from 'fs';
 import path from 'path';
+import request from 'request';
 
 var commands = { };
 var votacao = false;
@@ -22,6 +23,33 @@ export default commands = {
             msg.channel.send( '*Ping...*' ).then( function( oldMsg ) {
                 oldMsg.edit( `Pong! **${oldMsg.createdAt - msg.createdAt}ms**` );
             })
+        }
+	},
+
+	"covid": {
+		mode: 1,
+        description: "Check COVID-19 Status.",
+        process: async function(bot, msg, suffix) {
+			const req = await request("https://covid19-brazil-api.now.sh/api/report/v1/brazil", function(error, response, body) {
+    			if( error || typeof(body) == undefined ) {
+					msg.reply('Não foi possível obter informações da API.');
+					return;
+				}
+
+				var embed = new DiscordAPI.MessageEmbed();
+				embed.setColor(0x00ff70);
+				embed.setTitle('Status Oficial do COVID-19 [BRASIL]');
+				embed.addField('Casos Confirmados:', JSON.parse(body).data.confirmed);
+				embed.addField('Casos Recuperados:', JSON.parse(body).data.recovered);
+				embed.addField('Casos Fatais:', JSON.parse(body).data.deaths);
+				embed.setDescription(`Tenha cuidado ao andar nas ruas, e utilize todos os EPIs para sua proteção!`);
+				embed.setAuthor(msg.author.username, msg.author.avatarURL);
+				embed.setTimestamp();
+				embed.setFooter(`CodeHub! © 2020`, new Functions( ).getConfig( ).botAvatar)
+				msg.channel.send({embed})
+				new Functions( ).setLog( `O ${msg.author.username} consultou o status do COVID-19.`, '' );
+
+  			});
         }
 	},
 
