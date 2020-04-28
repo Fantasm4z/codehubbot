@@ -43,7 +43,7 @@ export default commands = {
 				embed.addField('Casos Recuperados:', JSON.parse(body).data.recovered);
 				embed.addField('Casos Fatais:', JSON.parse(body).data.deaths);
 				embed.setDescription(`Tenha cuidado ao andar nas ruas, e utilize todos os EPIs para sua proteção!`);
-				embed.setAuthor(msg.author.username, msg.author.avatarURL);
+				embed.setAuthor(msg.author.username, msg.author.avatarURL());
 				embed.setTimestamp();
 				embed.setFooter(`CodeHub! © 2020`, new Functions( ).getConfig( ).botAvatar)
 				msg.channel.send({embed})
@@ -307,6 +307,39 @@ export default commands = {
 			  	msg.reply( "Você não tem permissão para utilizar este comando." );
 			}
         }
+	},
+
+	"desbanir": {
+		mode: 3,
+		usage: "!desbanir USER_ID",
+		uso: "**Modo de uso:**\n!desbanir USER_ID\n\n**Somente criadores podem utilizar este comando!**",
+		description: "Desbanir Usuários",
+		process: async function( bot, msg, suffix ) {
+
+			let userBanned = await bot.users.fetch( suffix );
+
+			if ( !userBanned ) return false;
+
+			try{
+				msg.guild.members.unban(userBanned, 'admin attempt');
+				msg.channel.send(`${userBanned.tag} foi desbanido do servidor!`);
+			}catch( e ){
+				new Functions( ).setLog(`Falha ao desbanir ${userBanned.tag}, por ${msg.author.username} ${e}`);
+				return;
+			}
+
+			/*
+
+			bot.users.fetch( suffix ).then( (userFetch) => {
+
+				
+
+			}).catch( (e) => {
+				msg.reply(`Usuário não encontrado.`);
+				new Functions( ).setLog(`(desbanir) Exception: ${e}`);
+				return;
+			});*/
+		}
 	},
 
 	"banir": {
